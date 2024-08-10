@@ -16,6 +16,14 @@ class RepoService {
     constructor(repoRepository) {
         this.repoRepository = repoRepository;
     }
+    /**
+     * Save a single commit to the database.
+     * @param repoName - The name of the repository.
+     * @param commitMessage - The commit message.
+     * @param commitAuthor - The author of the commit.
+     * @param commitDate - The date of the commit.
+     * @param commitUrl - The URL of the commit.
+     */
     saveCommit(repoName, commitMessage, commitAuthor, commitDate, commitUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             const commit = this.repoRepository.create({
@@ -26,6 +34,17 @@ class RepoService {
                 commitUrl,
             });
             return yield this.repoRepository.save(commit);
+        });
+    }
+    /**
+     * Save multiple commits to the database in a single batch operation.
+     * This method is not currently used, but can be handy for batch inserts.
+     * @param commits - An array of commit objects to be saved.
+     */
+    saveCommitsBatch(commits) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const commitEntities = this.repoRepository.create(commits);
+            return yield this.repoRepository.save(commitEntities);
         });
     }
 }

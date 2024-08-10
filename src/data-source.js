@@ -1,16 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppDataSource = void 0;
 const typeorm_1 = require("typeorm");
-const Repo_1 = require("./entity/Repo");
+const Commit_1 = require("./entity/commit/Commit");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: 'mysql',
-    host: '127.0.0.1',
-    port: 3306,
-    username: 'root',
-    password: 'ola12345',
-    database: 'github_db',
-    entities: [Repo_1.Repo],
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    entities: [Commit_1.Commit],
     // entities: ["src/entity/**/*.ts"],
     // entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],

@@ -1,20 +1,27 @@
 import 'reflect-metadata';
 import express from 'express';
 import { AppDataSource } from './data-source';
-// import UserRoutes from './routes/UserRoutes';
-import RepoRoutes from './routes/RepoRoutes';
+import CommitRoutes from './routes/commit/CommitRoutes';
+
+import '../cron/commit/cronJob';
+
+import dotenv from 'dotenv';
+
+
+dotenv.config();
+
 
 const app = express();
 
 
 app.use(express.json());
 
-// app.use('/api', UserRoutes);
-app.use('/api', RepoRoutes);
+
+app.use('/api', CommitRoutes);
 
 AppDataSource.initialize().then(() => {
-  app.listen(6009, () => {
-    console.log('Server is running on http://localhost:6009');
+  app.listen(Number(process.env.APP_PORT), () => {
+    console.log(`Server is running on http://localhost:${Number(process.env.APP_PORT)}`);
   });
 }).catch(error => console.log(error));
 
