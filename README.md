@@ -9,7 +9,7 @@
  -  GITHUB_USERNAME
  -  APP_PORT   
 
-NB : Please kindly provide the necessary database credetials , Provide APP_PORT , if not privded it will default to 3000 , Provide GITHUB_USERNAME , if not provided it will default to chromium username 
+NB : Please kindly provide the necessary database credetials , Provide APP_PORT or Provide GITHUB_USERNAME data are empty it will default to 3000 and chromium github username , to have a bit of control you may include it in your .env
 
   
 ## RUN Commands
