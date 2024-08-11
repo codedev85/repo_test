@@ -1,22 +1,24 @@
 ## Project SetUp
 *** SETUP Dotenv - Database (Mysql) ***
 ## .env variables
-    -  DB_HOST
-    -  DB_PORT
-    -  DB_USERNAME
-    -  DB_PASSWORD
-    -  DB_DATABASE
-    -  GITHUB_USERNAME
-    -  APP_PORT   
+ -  DB_HOST
+ -  DB_PORT
+ -  DB_USERNAME
+ -  DB_PASSWORD
+ -  DB_DATABASE
+ -  GITHUB_USERNAME
+ -  APP_PORT   
 
 NB : Please kindly provide the necessary database credetials , Provide APP_PORT , if not privded it will default to 3000 , Provide GITHUB_USERNAME , if not provided it will default to chromium username 
-......................................................................
+
   
 ## RUN Commands
-    - npm install : To install all dependencies
-    - npm run dev : To complie typescript to ES2017 and start the server with nodemon 
+ - npm install : To install all dependencies
+ - npm run dev : To complie typescript to ES2017 and start the server with nodemon 
 
-........................................................................
+## Test Coverage 
+   ***RUN***
+   - npx jest
 
 ## Endpoints
 
