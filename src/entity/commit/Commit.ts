@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column ,CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column ,CreateDateColumn, UpdateDateColumn ,OneToMany } from 'typeorm';
+import {Repo} from '../repo/Repo';
 @Entity()
 export class Commit {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
@@ -7,6 +7,9 @@ export class Commit {
 
   @Column()
   repoName!: string;
+
+  @OneToMany(() => Repo, repo => repo.commit)
+  repos!: Repo[];
 
   @Column({ type: 'text' })
   commitMessage!: string;

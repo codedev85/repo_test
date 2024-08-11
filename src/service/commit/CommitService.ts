@@ -1,53 +1,44 @@
-// import { Repository } from 'typeorm';
-// import { Repo } from '../../entity/Repo';
-
-// export class RepoService {
-//   constructor(private repoRepository: Repository<Repo>) {}
-
-//   async saveCommit(
-//     repoName: string,
-//     commitMessage: string,
-//     commitAuthor: string,
-//     commitDate: Date,
-//     commitUrl: string
-//   ): Promise<Repo> {
-//     const commit = this.repoRepository.create({
-//       repoName,
-//       commitMessage,
-//       commitAuthor,
-//       commitDate,
-//       commitUrl,
-//     });
-
-//     return await this.repoRepository.save(commit);
-//   }
-// }
-
-
 import { Repository } from 'typeorm';
 import { Commit } from '../../entity/commit/Commit';
+import {Repo} from '../../entity/repo/Repo';
 
 export class CommitService {
   private commitRepository: Repository<Commit>;
+  private repoRepository: Repository<Repo>;
 
-  constructor(commitRepository: Repository<Commit>) {
+  constructor(commitRepository: Repository<Commit>,  repoRepository: Repository<Repo>) {
     this.commitRepository = commitRepository;
+    this.repoRepository = repoRepository;
   }
 
-  /**
-   * Save a single commit to the database.
-   * @param repoName - The name of the repository.
-   * @param commitMessage - The commit message.
-   * @param commitAuthor - The author of the commit.
-   * @param commitDate - The date of the commit.
-   * @param commitUrl - The URL of the commit.
+    /**
+   * 
+   * @param repoName 
+   * @param commitMessage 
+   * @param commitAuthor 
+   * @param commitDate 
+   * @param commitUrl 
+   * @param repoDescription 
+   * @param repoLanguage 
+   * @param repoUrl 
+   * @param forksCount 
+   * @param starsCount 
+   * @param openIssueCount 
+   * @param watchersCount 
    */
   async saveCommit(
     repoName: string,
     commitMessage: string,
     commitAuthor: string,
     commitDate: Date,
-    commitUrl: string
+    commitUrl: string,
+    repoDescription : string | null,
+    repoLanguage : string ,
+    repoUrl: string ,
+    forksCount: Number,
+    starsCount : Number,
+    openIssueCount : Number,
+    watchersCount : Number
   ): Promise<Commit> {
     const commitValue = this.commitRepository.create({
       repoName,
@@ -57,7 +48,22 @@ export class CommitService {
       commitUrl,
     });
 
-    return await this.commitRepository.save(commitValue);
+      const savedCommit = await this.commitRepository.save(commitValue);
+    
+
+      const newRepo = new Repo();
+      newRepo.commit = savedCommit; 
+      newRepo.repoName = repoName;
+      newRepo.repoDescription = repoDescription;
+      newRepo.repoUrl = repoUrl;
+      newRepo.repoLanguage = repoLanguage;
+      newRepo.repoForksCount = forksCount;
+      newRepo.repoStarsCount = starsCount;
+      newRepo.repoOpenIssueCount = openIssueCount;
+      newRepo.repoWatchersCount = watchersCount;
+      await this.repoRepository.save(newRepo);
+  
+      return savedCommit;
   }
 
   /**

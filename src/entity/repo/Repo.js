@@ -9,48 +9,60 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Commit = void 0;
+exports.Repo = void 0;
 const typeorm_1 = require("typeorm");
-const Repo_1 = require("../repo/Repo");
-let Commit = class Commit {
+const Commit_1 = require("../commit/Commit");
+let Repo = class Repo {
 };
-exports.Commit = Commit;
+exports.Repo = Repo;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'int', unsigned: true }),
     __metadata("design:type", Number)
-], Commit.prototype, "id", void 0);
+], Repo.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Commit_1.Commit, commit => commit.repos),
+    __metadata("design:type", Commit_1.Commit)
+], Repo.prototype, "commit", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Commit.prototype, "repoName", void 0);
+], Repo.prototype, "repoName", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Repo_1.Repo, repo => repo.commit),
-    __metadata("design:type", Array)
-], Commit.prototype, "repos", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'text' }),
-    __metadata("design:type", String)
-], Commit.prototype, "commitMessage", void 0);
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", Object)
+], Repo.prototype, "repoDescription", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Commit.prototype, "commitAuthor", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Date)
-], Commit.prototype, "commitDate", void 0);
+], Repo.prototype, "repoUrl", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Commit.prototype, "commitUrl", void 0);
+], Repo.prototype, "repoLanguage", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Repo.prototype, "repoForksCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Repo.prototype, "repoStarsCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Repo.prototype, "repoOpenIssueCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Repo.prototype, "repoWatchersCount", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ type: 'timestamp' }),
     __metadata("design:type", Date)
-], Commit.prototype, "created_at", void 0);
+], Repo.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)({ type: 'timestamp' }),
     __metadata("design:type", Date)
-], Commit.prototype, "updated_at", void 0);
-exports.Commit = Commit = __decorate([
-    (0, typeorm_1.Entity)()
-], Commit);
+], Repo.prototype, "updated_at", void 0);
+exports.Repo = Repo = __decorate([
+    (0, typeorm_1.Entity)({ name: 'repositories' })
+], Repo);

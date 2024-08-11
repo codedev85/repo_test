@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Commit } from './entity/commit/Commit';
+import {Repo} from './entity/repo/Repo';
 
 import dotenv from 'dotenv';
 
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password:process.env.DB_PASSWORD,
   database:process.env.DB_DATABASE,
-  entities: [ Commit ],
+  entities: [ Commit ,Repo],
   
   // entities: ["src/entity/**/*.ts"],
   // entities: ["src/entity/**/*.ts"],

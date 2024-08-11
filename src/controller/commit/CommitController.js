@@ -15,10 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CommitService_1 = require("../../service/commit/CommitService");
 const data_source_1 = require("../../data-source");
 const Commit_1 = require("../../entity/commit/Commit");
+const Repo_1 = require("../../entity/repo/Repo");
 const axios_1 = __importDefault(require("axios"));
 class CommitController {
     constructor() {
-        this.commitService = new CommitService_1.CommitService(data_source_1.AppDataSource.getRepository(Commit_1.Commit));
+        this.commitService = new CommitService_1.CommitService(data_source_1.AppDataSource.getRepository(Commit_1.Commit), data_source_1.AppDataSource.getRepository(Repo_1.Repo));
         this.getRepos = this.getRepos.bind(this);
     }
     getRepos(req, res) {
@@ -49,6 +50,13 @@ class CommitController {
                 }
                 for (const repo of repos) {
                     const repoName = repo.name;
+                    const repoDescription = repo.description;
+                    const repoLanguage = repo.language;
+                    const repoUrl = repo.url;
+                    const forksCount = repo.forks_count;
+                    const starsCount = repo.stargazers_count;
+                    const openIssueCount = repo.open_issues_count;
+                    const watchersCount = repo.watchers_count;
                     // Fetch commits for each repository
                     const commitResponse = yield axios_1.default.get(`https://api.github.com/repos/${username}/${repoName}/commits`, {
                         params: {
@@ -57,21 +65,13 @@ class CommitController {
                         },
                     });
                     const commits = commitResponse.data;
-                    // for (const commit of commits) {
-                    //   const commitMessage = commit.commit.message;
-                    //   const commitAuthor = commit.commit.author.name;
-                    //   const commitDate = new Date(commit.commit.author.date);
-                    //   const commitUrl = commit.html_url; 
-                    //   // Persist the commit details to the database
-                    //   await this.repoService.saveCommit(repoName, commitMessage, commitAuthor, commitDate ,commitUrl);
-                    // }
                     // Persist each commit's details to the database
                     const commitPromises = commits.map((commit) => {
                         const commitMessage = commit.commit.message;
                         const commitAuthor = commit.commit.author.name;
                         const commitDate = new Date(commit.commit.author.date);
                         const commitUrl = commit.html_url;
-                        return this.commitService.saveCommit(repoName, commitMessage, commitAuthor, commitDate, commitUrl);
+                        return this.commitService.saveCommit(repoName, commitMessage, commitAuthor, commitDate, commitUrl, repoDescription, repoLanguage, repoUrl, forksCount, starsCount, openIssueCount, watchersCount);
                     });
                     yield Promise.all(commitPromises);
                 }

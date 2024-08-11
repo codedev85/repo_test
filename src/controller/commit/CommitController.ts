@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { CommitService } from '../../service/commit/CommitService';
 import { AppDataSource } from '../../data-source';
 import { Commit } from '../../entity/commit/Commit';
+import {Repo} from '../../entity/repo/Repo';
 import axios from 'axios';
 
 class CommitController {
@@ -10,7 +11,7 @@ class CommitController {
   private commitService: CommitService;
 
   constructor() {
-    this.commitService = new CommitService(AppDataSource.getRepository(Commit));
+    this.commitService = new CommitService(AppDataSource.getRepository(Commit),AppDataSource.getRepository(Repo));
     this.getRepos = this.getRepos.bind(this); 
   }
 
@@ -56,6 +57,13 @@ async getRepos(req: Request, res: Response): Promise<Response> {
     for (const repo of repos) {
 
       const repoName = repo.name;
+      const repoDescription = repo.description;
+      const repoLanguage = repo.language;
+      const repoUrl = repo.url;
+      const forksCount = repo.forks_count;
+      const starsCount = repo.stargazers_count;
+      const openIssueCount = repo.open_issues_count;
+      const watchersCount = repo.watchers_count;
      
       // Fetch commits for each repository
       const commitResponse = await axios.get(`https://api.github.com/repos/${username}/${repoName}/commits`, {
@@ -68,25 +76,16 @@ async getRepos(req: Request, res: Response): Promise<Response> {
       const commits = commitResponse.data;
 
      
-  
-      // for (const commit of commits) {
-      //   const commitMessage = commit.commit.message;
-      //   const commitAuthor = commit.commit.author.name;
-      //   const commitDate = new Date(commit.commit.author.date);
-      //   const commitUrl = commit.html_url; 
-
-      //   // Persist the commit details to the database
-      //   await this.repoService.saveCommit(repoName, commitMessage, commitAuthor, commitDate ,commitUrl);
-      // }
-
          // Persist each commit's details to the database
-         const commitPromises = commits.map((commit: any) => {
+          const commitPromises = commits.map((commit: any) => {
           const commitMessage = commit.commit.message;
           const commitAuthor = commit.commit.author.name;
           const commitDate = new Date(commit.commit.author.date);
           const commitUrl = commit.html_url;
-
-          return this.commitService.saveCommit(repoName, commitMessage, commitAuthor, commitDate, commitUrl);
+         
+          return this.commitService.saveCommit(repoName, commitMessage, commitAuthor, 
+            commitDate, commitUrl ,repoDescription ,repoLanguage ,repoUrl,forksCount ,starsCount,openIssueCount,watchersCount 
+          );
         });
 
         await Promise.all(commitPromises); 
