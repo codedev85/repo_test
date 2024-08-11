@@ -1,13 +1,13 @@
 ## Project SetUp
 *** SETUP Dotenv - Database (Mysql) ***
 .................................................................
-    -  DB_HOST=127.0.0.1 
-    -  DB_PORT=3306 
-    -  DB_USERNAME= 
-    -  DB_PASSWORD= 
-    -  DB_DATABASE=
-    -  GITHUB_USERNAME= 
-    -  APP_PORT=   
+    -  DB_HOST
+    -  DB_PORT
+    -  DB_USERNAME
+    -  DB_PASSWORD
+    -  DB_DATABASE
+    -  GITHUB_USERNAME
+    -  APP_PORT   
 .....................................................................
 *** Please kindly provide the necessary database credetials ***
 *** Provide APP_PORT , if not privded it will default to 3000 ***
