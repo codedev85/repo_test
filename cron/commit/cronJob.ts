@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const username : string = process.env.GITHUB_USERNAME || 'codeeve85';
+const username : string = process.env.GITHUB_USERNAME || 'chromium';
 
 const repoService = new RepoService(
    username ,

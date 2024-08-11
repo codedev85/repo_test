@@ -14,7 +14,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('/api', CommitRoutes_1.default);
 data_source_1.AppDataSource.initialize().then(() => {
-    app.listen(Number(process.env.APP_PORT), () => {
-        console.log(`Server is running on http://localhost:${Number(process.env.APP_PORT)}`);
+    app.listen(Number(process.env.APP_PORT || 3000), () => {
+        console.log(`Server is running on http://localhost:${Number(process.env.APP_PORT || 3000)}`);
     });
 }).catch(error => console.log(error));

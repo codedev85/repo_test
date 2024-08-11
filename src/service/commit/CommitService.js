@@ -66,5 +66,28 @@ class CommitService {
             return yield this.commitRepository.save(commitEntities);
         });
     }
+    getTopCommitAuthors(limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const topAuthors = yield this.commitRepository
+                .createQueryBuilder('commit')
+                .select('commit.commitAuthor', 'commitAuthor')
+                .addSelect('COUNT(commit.commitAuthor)', 'commitCount')
+                .groupBy('commit.commitAuthor')
+                .orderBy('commitCount', 'DESC')
+                .limit(limit)
+                .getRawMany();
+            return topAuthors;
+        });
+    }
+    /**
+    *
+    * @param repoName
+    * @returns
+    */
+    getCommitsByRepoName(repoName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.commitRepository.find({ where: { repoName } });
+        });
+    }
 }
 exports.CommitService = CommitService;

@@ -5,14 +5,17 @@ import { Commit } from '../../entity/commit/Commit';
 import {Repo} from '../../entity/repo/Repo';
 import axios from 'axios';
 
+
 class CommitController {
    
 
   private commitService: CommitService;
-
+ 
   constructor() {
     this.commitService = new CommitService(AppDataSource.getRepository(Commit),AppDataSource.getRepository(Repo));
     this.getRepos = this.getRepos.bind(this); 
+    this.getTopCommitAuthors = this.getTopCommitAuthors.bind(this);
+    this.getCommitsByRepoName = this.getCommitsByRepoName.bind(this);
   }
 
 
@@ -112,6 +115,62 @@ async getRepos(req: Request, res: Response): Promise<Response> {
 
 }
 
+  /**
+   * Get the top commit authors based on the number of commits.
+   * @param req Express Request object
+   * @param res Express Response object
+   * @returns JSON response with top commit authors
+   */
+  async getTopCommitAuthors(req: Request, res: Response): Promise<Response> {
+    try {
+      const { limit } = req.query;
+
+      // Default limit to 5 if not provided
+      const topAuthors = await this.commitService.getTopCommitAuthors(Number(limit) || 5);
+
+      return res.status(200).json(topAuthors);
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(500).json({ message: error.message });
+      } else {
+        return res.status(500).json({ message: 'Unknown Error' });
+      }
+    }
+  }
+
+
+    /**
+   * 
+   * @param req 
+   * @param res 
+   * @returns 
+   */
+    async getCommitsByRepoName(req: Request, res: Response): Promise<Response> {
+      try {
+        const { repoName } = req.params;
+  
+        const commits = await this.commitService.getCommitsByRepoName(repoName);
+  
+        if (commits.length === 0) {
+          return res.status(404).json({ message: `No commits found for repository: ${repoName}` });
+        }
+  
+        return res.status(200).json(commits);
+
+      } catch (error) {
+
+        if (error instanceof Error) {
+
+          return res.status(500).json({ message: error.message });
+
+        } else {
+
+          return res.status(500).json({ message: 'Unknown Error' });
+
+        }
+      }
+    }
  
 }
 

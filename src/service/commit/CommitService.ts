@@ -5,11 +5,14 @@ import {Repo} from '../../entity/repo/Repo';
 export class CommitService {
   private commitRepository: Repository<Commit>;
   private repoRepository: Repository<Repo>;
+ 
 
   constructor(commitRepository: Repository<Commit>,  repoRepository: Repository<Repo>) {
     this.commitRepository = commitRepository;
     this.repoRepository = repoRepository;
   }
+
+  
 
     /**
    * 
@@ -74,5 +77,27 @@ export class CommitService {
   async saveCommitsBatch(commits: Partial<Commit>[]): Promise<Commit[]> {
     const commitEntities = this.commitRepository.create(commits);
     return await this.commitRepository.save(commitEntities);
+  }
+
+  async getTopCommitAuthors(limit: number): Promise<{ commitAuthor: string; commitCount: number }[]> {
+    const topAuthors = await this.commitRepository
+      .createQueryBuilder('commit')
+      .select('commit.commitAuthor', 'commitAuthor')
+      .addSelect('COUNT(commit.commitAuthor)', 'commitCount')
+      .groupBy('commit.commitAuthor')
+      .orderBy('commitCount', 'DESC')
+      .limit(limit)
+      .getRawMany();
+
+    return topAuthors;
+  }
+
+   /**
+   * 
+   * @param repoName 
+   * @returns 
+   */
+   async getCommitsByRepoName(repoName: string): Promise<Commit[]> {
+    return await this.commitRepository.find({ where: { repoName } });
   }
 }

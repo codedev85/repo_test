@@ -20,7 +20,7 @@ const data_source_1 = require("../../src/data-source");
 const Commit_1 = require("../../src/entity/commit/Commit");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const username = process.env.GITHUB_USERNAME || 'codeeve85';
+const username = process.env.GITHUB_USERNAME || 'chromium';
 const repoService = new RepoService_1.RepoService(username, 'reponame', //will be set dynamically from RepoServiceMethod
 data_source_1.AppDataSource.getRepository(Commit_1.Commit));
 // Schedule the cron job to run every hour
