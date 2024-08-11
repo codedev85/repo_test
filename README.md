@@ -1,6 +1,6 @@
 ## Project SetUp
 *** SETUP Dotenv - Database (Mysql) ***
-.................................................................
+## .env variables
     -  DB_HOST
     -  DB_PORT
     -  DB_USERNAME
@@ -8,7 +8,7 @@
     -  DB_DATABASE
     -  GITHUB_USERNAME
     -  APP_PORT   
-.....................................................................
+
 *** Please kindly provide the necessary database credetials ***
 *** Provide APP_PORT , if not privded it will default to 3000 ***
 *** Provide GITHUB_USERNAME , if not provided it will default to chromium username ***
